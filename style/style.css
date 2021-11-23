@@ -1,0 +1,48 @@
+.title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dataInput {
+    display: flex;
+    flex-direction: row;
+    height: auto;
+}
+
+.formInput {
+    height: 40;
+}
+
+body {
+    /* background-color: rgb(255, 255, 255);*/
+    margin: 0px;
+    overflow: hidden;
+}
+
+input[type="number"] {
+    background-color: bisque;
+    height: 25;
+    width: 50;
+    align-self: center;
+    border-left: 10;
+    border-radius: 5px;
+}
+
+input[type="button"] {
+    background-color: lightblue;
+    height: 40;
+    width: auto;
+    align-self: center;
+    border-left: 50;
+    border-radius: 5px;
+    font-size: x-large;
+    font-style: oblique
+}
+
+p {
+    font-size: larger;
+    padding-left: 5;
+    padding-right: 5;
+    font-weight: 700;
+}
