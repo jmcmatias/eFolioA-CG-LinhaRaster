@@ -15,9 +15,9 @@ var B ;
 var points = [];
 const gridSize = 20;
 const pixelSize = 1;
-const pixelColor=0xffff00;
-const gridColor1=0xff8000;
-const gridColor2=0x408080;
+const pixelColor=0xffff00;  //0xffff00 - amarelo
+const gridColor1=0xff8000;  //0xff8000 - laranja
+const gridColor2=0x408080;  //0x408080 - azulado
 
 const raycaster = new THREE.Raycaster();
 let mouse = new THREE.Vector3();
