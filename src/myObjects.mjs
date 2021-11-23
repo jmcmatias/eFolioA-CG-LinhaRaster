@@ -47,7 +47,7 @@ function createPixel(pixelSize, pixelPosition, pixelColor) {
     const material = new THREE.MeshBasicMaterial({
         opacity: 0.7,
         transparent: true,
-        color: 0xffff00,
+        color: pixelColor,
         side: THREE.DoubleSide
     });
     let pxl = new THREE.Mesh(geometry, material);
@@ -56,6 +56,20 @@ function createPixel(pixelSize, pixelPosition, pixelColor) {
     pxl.position.z = pixelHeight / 2;
     console.log(pxl);
     return pxl;
+}
+
+function getLineMP(a, b, pixelSize, pixelColor) {
+    let line = [];
+    line = lineMP(a, b);
+    const linePixels = [];
+    for (let i = 0; i < line.length; i++) {
+        console.log(line);
+        linePixels.push(createPixel(pixelSize, line[i],pixelColor));
+        console.log(linePixels);
+    }
+
+    //console.log(linePixels);
+    return linePixels
 }
 
 function getIdealLine(a, b,pixelSize) {
@@ -69,21 +83,6 @@ function getIdealLine(a, b,pixelSize) {
     const idealLine = new THREE.Line(line, black);
     return idealLine;
 }
-
-function getLineMP(a, b, pixelSize, pixelColor) {
-    let line = [];
-    line = lineMP(a, b);
-    const linePixels = [];
-    for (let i = 0; i < line.length; i++) {
-        console.log(line);
-        linePixels.push(createPixel(pixelSize, line[i]));
-        console.log(linePixels);
-    }
-
-    //console.log(linePixels);
-    return linePixels
-}
-
 
 class AxesCustom extends THREE.LineSegments {
     constructor(size = 1) {
