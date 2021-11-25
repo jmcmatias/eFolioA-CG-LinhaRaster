@@ -6,8 +6,8 @@
 import * as THREE from 'https://unpkg.com/three@0.124.0/build/three.module.js';
 import lineMP from '../lineMP.mjs'
 
-function createSquare(side, squareColor, x, y) {
-    const geometry = new THREE.BoxGeometry(side, side, 0)
+function createPixel(side, squareColor, x, y) {
+    const geometry = new THREE.BoxGeometry(side, side, 0);
     const material = new THREE.MeshBasicMaterial({
         color: squareColor,
         side: THREE.DoubleSide
@@ -21,17 +21,17 @@ function createSquare(side, squareColor, x, y) {
     return sqr;
 }
 
-function grid(size, pixelSize, gridColor1, gridColor2) {
+function displayRaster(gridSize, pixelSize, gridColor1, gridColor2) {
     const squares = [];
-    for (let x = -size; x <= size; x++) {
-        for (let y = -size; y <= size; y++) {
+    for (let x = -gridSize; x <= gridSize; x++) {
+        for (let y = -gridSize; y <= gridSize; y++) {
             if ((y % 2 == 0 && x % 2 == 0) ||
                 (y % 2 != 0 && x % 2 != 0)) {
-                let sqr = new createSquare(pixelSize, gridColor1, x, y);
+                let sqr = new createPixel(pixelSize, gridColor1, x, y);
                 squares.push(sqr);
             }
             else {
-                let sqr = new createSquare(pixelSize, gridColor2, x, y);
+                let sqr = new createPixel(pixelSize, gridColor2, x, y);
                 squares.push(sqr);
             }
         }
@@ -41,8 +41,8 @@ function grid(size, pixelSize, gridColor1, gridColor2) {
 
 }
 
-function createPixel(pixelSize, pixelPosition, pixelColor) {
-    const pixelHeight = pixelSize / 4;
+function createTile(pixelSize, pixelPosition, pixelColor) {
+    const pixelHeight = (pixelSize) / 4;
     const geometry = new THREE.BoxGeometry(pixelSize, pixelSize, pixelHeight);
     const material = new THREE.MeshBasicMaterial({
         opacity: 0.7,
@@ -54,36 +54,34 @@ function createPixel(pixelSize, pixelPosition, pixelColor) {
     pxl.position.x = pixelPosition.x;
     pxl.position.y = pixelPosition.y;
     pxl.position.z = pixelHeight / 2;
-    console.log(pxl);
+    //console.log(pxl);                             // DEBUG only
     return pxl;
 }
 
+// Função que chama a lineMP para o par de pontos selecionados e cria um array, e seguidamente cria um outro array com a Mesh a ser inserida na scene
 function getLineMP(a, b, pixelSize, pixelColor) {
     let line = [];
     line = lineMP(a, b);
     const linePixels = [];
     for (let i = 0; i < line.length; i++) {
-        console.log(line);
-        linePixels.push(createPixel(pixelSize, line[i],pixelColor));
-        console.log(linePixels);
+        //console.log(line);                            // DEBUG only
+        linePixels.push(createTile(pixelSize, line[i],pixelColor)); // para cada ponto calculado em lineMP cria um novo p
     }
-
-    //console.log(linePixels);
+     //console.log(linePixels);                         // DEBUG only
     return linePixels
 }
-
+// Função que cria a linha ideal 
 function getIdealLine(a, b,pixelSize) {
-    console.log(pixelSize);
     const pointsForLine = [];
     pointsForLine.push(new THREE.Vector3(a.x,a.y,pixelSize/8));
     pointsForLine.push(new THREE.Vector3(b.x,b.y,pixelSize/8));
-    console.log(pointsForLine);
     const line = new THREE.BufferGeometry().setFromPoints(pointsForLine);
     const black = new THREE.LineBasicMaterial({ color: 0x000000 });
     const idealLine = new THREE.Line(line, black);
     return idealLine;
 }
 
+// classe para criar os eixos x e y, igual a que vem por defeito no THREE.js mas com a componente do vertice z a zero
 class AxesCustom extends THREE.LineSegments {
     constructor(size = 1) {
         const vertices = [
@@ -109,4 +107,4 @@ class AxesCustom extends THREE.LineSegments {
 }
 
 
-export { grid, AxesCustom, createPixel, getLineMP, getIdealLine };
+export { displayRaster, AxesCustom, createPixel, getLineMP, getIdealLine };
