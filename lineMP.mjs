@@ -3,6 +3,7 @@
     Jorge Matias 1901087   19/11/2021
 */
 
+// Função que gera o array com as coordenadas dos pontos da linha raster pelo algoritmo do ponto médio
 function lineMP(a = { x: x0, y: y0 }, b = { x: x1, y: y1 }) {                                                         //Condições de chamada
     /*                                                                                                                     // 1<|m|<1? Sinal m
         se for octante 1 x cresce mais rapido do que y cresce, escolha entre E e NE                 (m>0 |m|<1) A ENE< x ganha  (1)     (1)
