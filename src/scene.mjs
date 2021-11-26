@@ -90,41 +90,35 @@ document.body.addEventListener('keydown', onKeyDown, false);
 // Função que recebe o callback do evento keydown
 function onKeyDown(event) {
     const keyName = event.key;              // inicializa keyName com o nome da tecla pressionada
+    let i = 0;
     //console.log(keyname); // DEBUG only
     if (keyName == 'Backspace') {           // caso seja Backspace
         resetScene();                       // Faz reset a scene
     }
 
-    if (points.length < 2) {                // Se o vetor pontos ainda não for 2
-        if (keyName == 'x') {               // se a tecla pressionada for 'x'       
-            //scene.add(new THREE.ArrowHelper(raycaster.ray.direction, raycaster.ray.origin, 300, 0xff0000)); // DEBUG only
-            raycaster.setFromCamera(mouse, camera);                    // inicializa o raycaster com as posições do rato em relação á camara
-            const intersects = raycaster.intersectObjects(pixels);     // coloca os objetos existentes no array pixels que são intercetados pelo ray no array intersects
-            if (intersects.length > 0) {                               // Se existir alguma interseção
-                intersects[0].object.material.color.set(intersectedPixelColor)      // muda a cor do pixel intersetado para vermelho
-                points.push({ x: intersects[0].object.position.x, y: intersects[0].object.position.y }) // coloca o ponto que define a posição do pixel intersetado em points
-                if (points.length == 2) {                              // caso points já tenha 2 pontos 
-                    A = points[0];                                     // Inicializa A com o ponto no index 0 de points
-                    B = points[1];                                     // Inicializa B com o ponto no index 1 de points
-                    //console.log(points[0]); // DEBUG only
-                    //console.log(A, B);      // DEBUG only
-                    getLineMPBlocks();                                 // Chama a função que irá desencadear a inserção da linha raster na scene
-                    drawIdealLine();                                   // Chama a função que irá desencadear a inserção da linha ideal na scene
-                }
-                //console.log(intersects) // DEBUG only
-                // console.log("x= " + intersects[0].object.position.x + ", y= " + intersects[0].object.position.y); // DEBUG only
+    if (keyName == 'x') {               // se a tecla pressionada for 'x'       
+        //scene.add(new THREE.ArrowHelper(raycaster.ray.direction, raycaster.ray.origin, 300, 0xff0000)); // DEBUG only
+        raycaster.setFromCamera(mouse, camera);                    // inicializa o raycaster com as posições do rato em relação á camara
+        const intersects = raycaster.intersectObjects(pixels);     // coloca os objetos existentes no array pixels que são intercetados pelo ray no array intersects
+        if (intersects.length > 0) {                               // Se existir alguma interseção
+            intersects[0].object.material.color.set(intersectedPixelColor)      // muda a cor do pixel intersetado para vermelho
+            points.push({ x: intersects[0].object.position.x, y: intersects[0].object.position.y }) // coloca o ponto que define a posição do pixel intersetado em points
+            if (points.length >= 2) {    // caso points já tenha pelo menos 2 pontos 
+                A = points[0];                                     // Inicializa A com o ponto no index 0 de points
+                B = points[1];                                     // Inicializa B com o ponto no index 1 de points
+                //console.log(points[0]); // DEBUG only
+                //console.log(A, B);      // DEBUG only
+                getLineMPBlocks();                                 // Chama a função que irá desencadear a inserção da linha raster na scene
+                drawIdealLine();                                   // Chama a função que irá desencadear a inserção da linha ideal na scene
+                points = [];                 // limpa o array points para que possa receber mais dois pontos
             }
+            //console.log(intersects) // DEBUG only
+            // console.log("x= " + intersects[0].object.position.x + ", y= " + intersects[0].object.position.y); // DEBUG only
         }
     }
 }
 
-// Função recursiva que mantém a scene atualizada com o renderer
-function animate() {
-    //controls.update(); 
-    renderer.render(scene, camera);
-    window.requestAnimationFrame(animate);
-    
-}
+
 
 // Função que reinicia todo o processo do algoritmo (para quando backspace é pressiondo ou quando é redimensionado o display raster)
 function resetScene() {
@@ -132,6 +126,18 @@ function resetScene() {
     points = [];                                // Reinicia o array poinst
     getAxes();                                  // chama o desenho dos eixos 
     getDisplayRaster();                         // Chama o desenho do display raster
+}
+
+
+window.changeDisplayRasterSize = () =>{
+    rasterDisplaySize = document.getElementById("rasterDisplaySize").value;
+    resetScene();
+}
+// Função recursiva que mantém a scene atualizada com o renderer
+function animate() {
+    //controls.update(); 
+    renderer.render(scene, camera);
+    window.requestAnimationFrame(animate);
 }
 
 // Event Listener que deteta se a janela foi redimensionada e chama a função resize
