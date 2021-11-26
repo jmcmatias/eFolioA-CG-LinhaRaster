@@ -62,24 +62,24 @@ function createTile(pixelSize, pixelPosition, tileColor) {
 }
 
 // Função que chama a lineMP para o par de pontos selecionados e cria um array, e seguidamente cria um outro array com a Mesh a ser inserida na scene
-function getLineMP(a, b, pixelSize, pixelColor) {
-    let lineVertices = [];
-    lineVertices = lineMP(a, b);
-    const linePixels = [];
-    lineVertices.every(vertice => linePixels.push(createTile(pixelSize,vertice,pixelColor)));
+function getLineMP(a, b, pixelSize, tileColor) {   // recebe os pontos selecionados, a cor 
+    let lineVertices = [];              // define array 
+    lineVertices = lineMP(a, b);        // para receber o output de lineMP
+    const linePixels = [];              // define array para receber os objetos mesh tile
+    lineVertices.every(vertice => linePixels.push(createTile(pixelSize,vertice,tileColor))); // para cada lineVertice cria um tile no ponto do index
     //console.log(line);                            // DEBUG only
     //console.log(linePixels);                         // DEBUG only
-    return linePixels
+    return linePixels                   // retorna o array de tiles (objetos mesh)
 }
 // Função que cria a linha ideal 
-function getIdealLine(a, b,pixelSize) {
-    const pointsForLine = [];
-    pointsForLine.push(new THREE.Vector3(a.x,a.y,pixelSize/8));
-    pointsForLine.push(new THREE.Vector3(b.x,b.y,pixelSize/8));
-    const line = new THREE.BufferGeometry().setFromPoints(pointsForLine);
-    const black = new THREE.LineBasicMaterial({ color: 0x000000 });
-    const idealLine = new THREE.Line(line, black);
-    return idealLine;
+function getIdealLine(a, b,pixelSize) {   // recebe os pontos e o tamanho do pixel de forma a desenhar a linha a meia altura dos tiles
+    const pointsForLine = [];             // define um array
+    pointsForLine.push(new THREE.Vector3(a.x,a.y,pixelSize/8));  // nesse array coloca os pontos selecionados na forma
+    pointsForLine.push(new THREE.Vector3(b.x,b.y,pixelSize/8));  // vector3 pra poderem ser utilizados no buffer geometry
+    const line = new THREE.BufferGeometry().setFromPoints(pointsForLine);   // cria o buffergeometry dos pontos selecionados
+    const black = new THREE.LineBasicMaterial({ color: 0x000000 }); // cria o material
+    const idealLine = new THREE.Line(line, black);                  // "funde-os" juntos numa linha para idealline
+    return idealLine;                                               // retorna idealline
 }
 
 // classe para criar os eixos x e y, igual a que vem por defeito no THREE.js mas com a componente do vertice z a zero

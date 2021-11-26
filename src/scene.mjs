@@ -17,7 +17,7 @@ var points = [];              //array que irá receber os pontos selecionados pe
 let rasterDisplaySize = 20;   //tamanho da grelha inicial de pixeis, poderá mudar a pedido do utilizador
 const pixelSize = 1;          //tamanho do pixel(e tile) irão manter-se sempre a 1
 
-const pixelColor = 0xffff00;            //0xffff00 - amarelo
+const tileColor = 0xffff00;            //0xffff00 - amarelo
 const gridColor1 = 0xff8000;            //0xff8000 - laranja
 const gridColor2 = 0x408080;            //0x408080 - azulado
 const intersectedPixelColor = 0xff0000; //0xff0000 - Vermelho
@@ -73,7 +73,7 @@ function getAxes() {
 // Função que vai inserir os tiles calculados por lineMP na scene
 function getLineMPBlocks() {
     lineTiles = [];
-    lineTiles = getLineMP(A, B, pixelSize, pixelColor);    // Chama a função que retorna o array com os objetos a serem inseridos
+    lineTiles = getLineMP(A, B, pixelSize, tileColor);    // Chama a função que retorna o array com os objetos a serem inseridos
     //console.log(lineTiles);                              // DEBUG only
     lineTiles.every(tile => scene.add(tile));              // para todos os tiles insere cada um na scene
 }
